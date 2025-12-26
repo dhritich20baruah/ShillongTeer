@@ -38,9 +38,9 @@ export default function Home() {
         {/* Dark overlay to make text pop */}
         <div className="absolute inset-0 bg-gray-900/40" />
       </div>
-      <h1 className="mt-10 text-4xl text-white font-bold">SHILLONG TEER</h1>
-      <p className="text-xl font-semibold m-5 text-white">DATE: {formatted_date}</p>
-      <div className="p-4 md:p-8 w-full">
+      <h1 className="mt-10 text-4xl text-yellow-300 font-bold shadow-lg shadow-black bg-black p-3 opacity-90">SHILLONG TEER</h1>
+      <p className="text-md font-semibold m-2 text-yellow-300 shadow-lg shadow-black bg-black p-3 opacity-90">DATE: {formatted_date}</p>
+      <div className="p-2 md:p-4 w-full">
         <div className="w-full h-20 bg-blue-700 text-white flex items-center justify-center rounded-lg shadow-md font-bold text-lg mb-2">
           Shooting Time F/R - 3:15 PM | S/R - 4:15 PM
         </div>
