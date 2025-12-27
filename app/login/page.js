@@ -21,7 +21,7 @@ const LoginPage = () => {
     });
 
     return () => {
-      authListener.subscription.unsubscribe();
+      supabase.auth.Listener.subscription.unsubscribe()
     };
   }, []);
 
