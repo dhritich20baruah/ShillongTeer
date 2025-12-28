@@ -56,7 +56,7 @@ const LoginPage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       {/* Login Card */}
-      {session ? (
+      {!session ? (
         <div className='w-full'>
           <div className='w-full flex justify-end'>
             <button onClick={logout} className="bg-red-700 text-white rounded-md p-2 m-3 cursor-pointer hover:bg-red-600">
