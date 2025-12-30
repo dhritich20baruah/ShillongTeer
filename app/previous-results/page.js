@@ -28,7 +28,7 @@ export default function PreviousResults() {
         { "date": "14-12-2025", "morning-sr": 65, "morning-fr": 34, "evening-sr": 38, "evening-fr": 45, "night-sr": 89, "night-fr": 44 }
     ])
 
-     const [roundData, setRoundData] = useState([]);
+     const [roundData, setRoundData] = useState({});
     
         const fetchRounds = async () => {
             const { data } = await supabase
@@ -41,7 +41,7 @@ export default function PreviousResults() {
                     ...acc, [`${row.session_name}-${row.round_type}`]: row.value, date: row.result_date
                 }), {});
                 console.log(formatted)
-                // setRoundData(formatted)
+                setRoundData(formatted)
             }
         }
     
@@ -69,47 +69,47 @@ export default function PreviousResults() {
                     <p>
                     MORNING RESULTS
                     </p>
-                    <div className="flex justify-around font-light w-full">
-                        <p>First Round</p>
-                        <p>Second Round</p>
+                    <div className="flex justify-around font-semibold w-full">
+                        <p>FR</p>
+                        <p>SR</p>
                     </div>
                 </div>
                 <div className="text-white flex flex-col items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                     <p>
                     EVENING RESULTS
                     </p>
-                    <div className="flex justify-around font-light w-full">
-                        <p>First Round</p>
-                        <p>Second Round</p>
+                    <div className="flex justify-around font-semibold w-full">
+                        <p>FR</p>
+                        <p>SR</p>
                     </div>
                 </div>
                 <div className="text-white flex flex-col items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                     <p>
                     NIGHT RESULTS
                     </p>
-                    <div className="flex justify-around font-light w-full">
-                        <p>First Round</p>
-                        <p>Second Round</p>
+                    <div className="flex justify-around font-semibold w-full">
+                        <p>FR</p>
+                        <p>SR</p>
                     </div>
                 </div>
             </div>
-            {roundData.map((item, index) => {
+            {results.map((item, index) => {
                 return (
                     <div className="grid grid-cols-4 w-full md:w-[95%]" key={index}>
                         <div className="h-12 border-2 border-blue-800 bg-white text-black flex items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                             {item.date}
                         </div>
                         <div className="h-12 border-2 border-blue-800 bg-white text-black flex items-center justify-around text-center text-sm shadow-md md:font-bold md:text-md">
-                            <p>{roundData[rounds[0].id]?.toString().padStart(2, '0') || ''}</p>
-                            <p>{roundData[rounds[1].id]?.toString().padStart(2, '0') || ''}</p>
+                            <p>{item["morning-fr"]}</p>
+                            <p>{item["morning-sr"]}</p>
                         </div>
                         <div className="h-12 border-2 border-blue-800 bg-white text-black flex items-center justify-around text-center text-sm shadow-md md:font-bold md:text-md">
-                            <p>{roundData[rounds[2].id]?.toString().padStart(2, '0') || ''}</p>
-                            <p>{roundData[rounds[3].id]?.toString().padStart(2, '0') || ''}</p>
+                            <p>{item["evening-fr"]}</p>
+                            <p>{item["evening-sr"]}</p>
                         </div>
                         <div className="h-12 border-2 border-blue-800 bg-white text-black flex items-center justify-around text-center text-sm shadow-md md:font-bold md:text-md">
-                            <p>{roundData[rounds[4].id]?.toString().padStart(2, '0') || ''}</p>
-                            <p>{roundData[rounds[5].id]?.toString().padStart(2, '0') || ''}</p>
+                            <p>{item["night-fr"]}</p>
+                            <p>{item["night-sr"]}</p>
                         </div>
                     </div>
                 )
