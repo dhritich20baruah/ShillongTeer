@@ -2,6 +2,7 @@ import { parseISO, format } from "date-fns";
 import { Metadata } from 'next';
 import Link from "next/link";
 import Image from "next/image";
+import RoundsTable from "./component/RoundsTable";
 
 export async function generateMetadata() {
   const today = new Date().toLocaleDateString('en-GB'); // e.g., 23/12/2025
@@ -41,38 +42,7 @@ export default function Home() {
       <h1 className="mt-10 text-4xl text-yellow-300 font-bold shadow-lg shadow-black bg-black p-3 opacity-90">SHILLONG TEER</h1>
       <p className="text-md font-semibold m-2 text-yellow-300 shadow-lg shadow-black bg-black p-3 opacity-90">DATE: {formatted_date}</p>
       <div className="p-2 md:p-4 w-full">
-        <div className="w-full h-20 bg-blue-700 text-white flex items-center justify-center rounded-lg shadow-md font-bold text-lg mb-2">
-          Shooting Time F/R - 3:15 PM | S/R - 4:15 PM
-        </div>
-        <div className="grid grid-cols-3 gap-1">
-          <div id="Morning">
-            <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="First Round Result">
-              Morning Round
-            </div>
-            <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg font-semibold">
-              <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>62</p></div>
-              <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>45</p></div>
-            </div>
-          </div>
-          <div id="Evening">
-            <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
-              Evening Round
-            </div>
-            <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg font-semibold">
-              <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>62</p></div>
-              <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>45</p></div>
-            </div>
-          </div>
-          <div id="Night">
-            <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
-              Night Round
-            </div>
-            <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg font-semibold">
-              <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>62</p></div>
-              <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>45</p></div>
-            </div>
-          </div>
-        </div>
+        <RoundsTable/>
         <Link href="/previous-results">
           <div className="w-full my-10 cursor-pointer h-10 hover:bg-red-700 bg-orange-700 text-white flex items-center justify-center rounded-lg shadow-2xl shadow-black font-bold text-md">
             CLICK TO VIEW PREVIOUS RESULTS
