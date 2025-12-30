@@ -70,19 +70,19 @@ const AllGame = () => {
         {/* Dark overlay to make text pop */}
         <div className="absolute inset-0 bg-gray-900/40" />
       </div>
-      <h1 className="mt-10 text-4xl text-white font-bold text-center shadow-lg shadow-black bg-black p-2 opacity-90">DUBAI EXPRESS</h1>
+      <h1 className="mt-10 text-4xl text-white font-bold text-center shadow-lg shadow-black bg-black p-2 opacity-90">SHILLONG EXPRESS</h1>
       <h2 className="text-md font-semibold m-2 text-white shadow-black shadow-lg bg-black p-2 opacity-90">ALL GAME</h2>
       <p className="text-md font-semibold m-2 text-white shadow-black shadow-lg bg-black p-2 opacity-90">DATE: {formatted_date}</p>
       <div className='w-full flex flex-col items-center justify-center'>
-        <div className="flex md:w-1/2 justify-evenly bg-blue-800 text-white">
+        <div className="flex md:w-1/2 justify-evenly bg-blue-800 text-white w-full text-xl">
           <p>Time</p>
           <p>Result</p>
         </div>
         {game.map((item, index) => {
           return (
-            <div key={index} className="flex md:w-1/2 justify-evenly items- bg-white text-black font-bold border-b-2 border-blue-700">
-              <p className='flex flex-col'>{item.time}</p>
-              <p className="flex flex-col">{results[item.time]}</p>
+            <div key={index} className="flex md:w-1/2 w-full justify-evenly items-center bg-white text-black font-bold border-b-2 border-blue-700 text-xl">
+              <p className='flex flex-col text-center'>{item.time}</p>
+              <p className="flex flex-col text-center">{results[item.time]}</p>
             </div>
           )
         })}

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase-client';
 
 const RoundsTable = () => {
-    const [roundData, setRoundData] = useState({});
+    const [roundData, setRoundData] = useState({'morning-fr': 0,
+        'morning-sr': 0, 'evening-fr': 0, 'evening-sr': 0, 'night-fr': 0, 'night-sr': 0
+    });
 
     const fetchRounds = async () => {
         const today = new Date().toISOString().split('T')[0];
@@ -39,7 +41,7 @@ const RoundsTable = () => {
                 <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="First Round Result">
                     Morning Round
                 </div>
-                <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg font-semibold">
+                <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
                     <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData[rounds[0].id]?.toString().padStart(2, '0') || ''}</p></div>
                     <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData[rounds[1].id]?.toString().padStart(2, '0') || ''}</p></div>
                 </div>
@@ -48,7 +50,7 @@ const RoundsTable = () => {
                 <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
                     Evening Round
                 </div>
-                <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg font-semibold">
+                <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
                     <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData[rounds[2].id]?.toString().padStart(2, '0') || ''}</p></div>
                     <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData[rounds[3].id]?.toString().padStart(2, '0') || ''}</p></div>
                 </div>
@@ -57,7 +59,7 @@ const RoundsTable = () => {
                 <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
                     Night Round
                 </div>
-                <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg font-semibold">
+                <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
                     <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData[rounds[4].id]?.toString().padStart(2, '0') || ''}</p></div>
                     <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData[rounds[5].id]?.toString().padStart(2, '0') || ''}</p></div>
                 </div>
