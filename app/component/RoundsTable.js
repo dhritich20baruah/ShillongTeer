@@ -11,7 +11,7 @@ const RoundsTable = () => {
     useEffect(() => {
         fetchRounds()
     }, [])
-    
+
     const fetchRounds = async () => {
         const today = new Date().toISOString().split('T')[0];
         const { data } = await supabase
@@ -19,11 +19,15 @@ const RoundsTable = () => {
             .select('*')
             .eq('result_date', today);
 
+        console.log(data)
         if (data) {
             const formatted = data.reduce((acc, row) => ({
                 ...acc, [`${row.session_name}-${row.round_type}`]: row.value
             }), {});
-            setRoundData(formatted)
+            setRoundData(prev => ({
+                ...prev,
+                ...formatted
+            }))
         }
     }
 
@@ -34,8 +38,8 @@ const RoundsTable = () => {
                     Morning Round
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
-                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData["morning-fr"]?.toString().padStart(2, '0') || ''}</p></div>
-                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData["morning-sr"]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{(roundData["morning-fr"]??'--').toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{(roundData["morning-sr"]??'--').toString().padStart(2, '0') || ''}</p></div>
                 </div>
             </div>
             <div id="Evening">
@@ -43,8 +47,8 @@ const RoundsTable = () => {
                     Evening Round
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
-                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData["evening-fr"]?.toString().padStart(2, '0') || ''}</p></div>
-                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData["evening-sr"]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{(roundData["evening-fr"]??'--').toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{(roundData["evening-sr"]??'--').toString().padStart(2, '0') || ''}</p></div>
                 </div>
             </div>
             <div id="Night">
@@ -52,8 +56,8 @@ const RoundsTable = () => {
                     Night Round
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
-                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData["night-fr"]?.toString().padStart(2, '0') || ''}</p></div>
-                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData["night-sr"]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{(roundData["night-fr"]??'--').toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{(roundData["night-sr"]??'--').toString().padStart(2, '0') || ''}</p></div>
                 </div>
             </div>
         </div>
