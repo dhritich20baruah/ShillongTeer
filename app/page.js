@@ -1,5 +1,4 @@
 import { parseISO, format } from "date-fns";
-import { Metadata } from 'next';
 import Link from "next/link";
 import Image from "next/image";
 import RoundsTable from "./component/RoundsTable";
