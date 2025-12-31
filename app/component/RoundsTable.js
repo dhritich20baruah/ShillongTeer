@@ -7,6 +7,11 @@ const RoundsTable = () => {
         'morning-sr': 0, 'evening-fr': 0, 'evening-sr': 0, 'night-fr': 0, 'night-sr': 0
     });
 
+    
+    useEffect(() => {
+        fetchRounds()
+    }, [])
+    
     const fetchRounds = async () => {
         const today = new Date().toISOString().split('T')[0];
         const { data } = await supabase
@@ -21,19 +26,6 @@ const RoundsTable = () => {
             setRoundData(formatted)
         }
     }
-
-    const rounds = [
-        { id: 'morning-fr', label: 'Morning First Round', session: 'morning', type: 'fr' },
-        { id: 'morning-sr', label: 'Morning Second Round', session: 'morning', type: 'sr' },
-        { id: 'evening-fr', label: 'Evening First Round', session: 'evening', type: 'fr' },
-        { id: 'evening-sr', label: 'Evening Second Round', session: 'evening', type: 'sr' },
-        { id: 'night-fr', label: 'Night First Round', session: 'night', type: 'fr' },
-        { id: 'night-sr', label: 'Night Second Round', session: 'night', type: 'sr' },
-    ]
-
-    useEffect(() => {
-        fetchRounds()
-    }, [])
 
     return (
         <div className="grid grid-cols-3 gap-1">
