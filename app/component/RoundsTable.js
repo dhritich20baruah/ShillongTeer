@@ -42,8 +42,8 @@ const RoundsTable = () => {
                     Morning Round
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
-                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData[rounds[0].id]?.toString().padStart(2, '0') || ''}</p></div>
-                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData[rounds[1].id]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData["morning-fr"]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData["morning-sr"]?.toString().padStart(2, '0') || ''}</p></div>
                 </div>
             </div>
             <div id="Evening">
@@ -51,8 +51,8 @@ const RoundsTable = () => {
                     Evening Round
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
-                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData[rounds[2].id]?.toString().padStart(2, '0') || ''}</p></div>
-                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData[rounds[3].id]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData["evening-fr"]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData["evening-sr"]?.toString().padStart(2, '0') || ''}</p></div>
                 </div>
             </div>
             <div id="Night">
@@ -60,8 +60,8 @@ const RoundsTable = () => {
                     Night Round
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
-                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData[rounds[4].id]?.toString().padStart(2, '0') || ''}</p></div>
-                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData[rounds[5].id]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{roundData["night-fr"]?.toString().padStart(2, '0') || ''}</p></div>
+                    <div className="flex items-center justify-center border-l-2 border-gray-800 w-full"><p>{roundData["night-sr"]?.toString().padStart(2, '0') || ''}</p></div>
                 </div>
             </div>
         </div>
