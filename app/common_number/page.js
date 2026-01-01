@@ -18,8 +18,8 @@ const CommonNumber = () => {
                 {/* Dark overlay to make text pop */}
                 <div className="absolute inset-0 bg-gray-900/40" />
             </div>
-            <h1 className="mt-10 text-4xl text-white font-bold text-center shadow-black shadow-lg">SHILLONG TEER COMMON NUMBER</h1>
-            <p className="text-xl font-semibold m-5 text-white shadow-black shadow-lg">DATE: {formatted_date}</p>
+            <h1 className="mt-10 text-4xl text-white font-bold text-center shadow-black shadow-lg p-3 opacity-90 bg-black">SHILLONG TEER COMMON NUMBER</h1>
+            <p className="text-xl font-semibold m-5 text-white shadow-black shadow-lg p-3 opacity-90 bg-black">DATE: {formatted_date}</p>
             <div className="p-4 md:p-8 w-full">
                 <div className="w-full h-20 bg-blue-700 text-white flex items-center justify-center rounded-lg shadow-md font-bold text-lg">
                     COMMON NUMBERS
@@ -116,12 +116,6 @@ const CommonNumber = () => {
                             <div className="flex items-center justify-center">45</div>
                         </div>
                     </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3">
-                    <div className="md:col-span-2 h-20 bg-blue-800 text-white flex items-center justify-center rounded-l-lg shadow-md font-bold text-lg">
-                        TODAY'S TARGET
-                    </div>
-                    <div className="h-20 text-blue-800 bg-white border-2 border-blue-800 flex items-center justify-center rounded-r-lg shadow-md font-bold text-lg">81 to 30</div>
                 </div>
             </div>
         </div>

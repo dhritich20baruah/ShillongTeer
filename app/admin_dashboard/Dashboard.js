@@ -1,8 +1,10 @@
 "use client"
-import React, { useEffect, useState } from 'react'
-import { supabase } from '../lib/supabase-client'
+import React, { useEffect, useState } from 'react';
+import { supabase } from '../lib/supabase-client';
+import CommonNumberForm from './CommonNumber';
 
 const Dashboard = () => {
+    //HOME PAGE
     const [roundData, setRoundData] = useState({});
 
     const handleRoundUpdate = async (session, round, value) => {
@@ -45,6 +47,7 @@ const Dashboard = () => {
     ]
 
     //ALL GAME CODE
+    const [results, setResults] = useState({});
     const generateTimeSlots = () => {
         const slots = [];
         let current = new Date();
@@ -60,12 +63,9 @@ const Dashboard = () => {
         }
         return slots;
     }
+ 
     const timeSlots = generateTimeSlots();
 
-    const [results, setResults] = useState({});
-    const [gameCode, setGameCode] = useState(0);
-
-    // ALL GAME
     const handleAdd = async (time, value) => {
         if (!value) return alert("Please enter a number")
         const { data, error } = await supabase.from('all_game')
@@ -105,6 +105,7 @@ const Dashboard = () => {
     }, [])
 
     //GAME CODE
+    const [gameCode, setGameCode] = useState(0);
     const handleGameCode = async (e) => {
         e.preventDefault();
         const { data, error } = await supabase.from('game_code')
@@ -143,114 +144,14 @@ const Dashboard = () => {
                         {rounds.map((round) => (
                             <div key={round.id} className='flex justify-between w-full my-2 items-center'>
                                 <label htmlFor="morning-fr" className="w-44 block text-md font-medium text-gray-800 m-2">{round.label}</label>
-                                <input type="number" value={roundData[round.id] || ''} onChange={(e) => setRoundData({...roundData, [round.id]: e.target.value})} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                                <input type="number" value={roundData[round.id] || ''} onChange={(e) => setRoundData({ ...roundData, [round.id]: e.target.value })} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
                                 <button className="p-2 bg-orange-600 text-white mx-1 rounded-md cursor-pointer hover:bg-orange-700" onClick={() => handleRoundUpdate(round.session, round.type, roundData[round.id])}>ADD</button>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className='md:w-2/3 w-full m-2 p-2 shadow-lg shadow-blue-900 rounded-lg'>
-                    <div className="p-2 w-full">
-                        <h1 className='font-semibold text-lg text-center'>COMMON NUMBERS</h1>
-                        <div className="w-full h-10 text-black flex items-center justify-center rounded-lg shadow-md font-bold text-lg">
-                            MORNING
-                        </div>
-                        <div className="grid grid-cols-3 gap-1">
-                            <div id="m-direct" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="Direct">
-                                    Direct
-                                </div>
-                                <input type="number" className="h-10 bg-white border-2 w-full border-gray-800 flex items-center justify-center rounded-b-lg shadow-sm text-lg px-10" placeholder='----' />
-                            </div>
-                            <div id="m-house" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="House">
-                                    House
-                                </div>
-                                <div className="h-10 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg">
-                                    <input type="number" className="flex items-center justify-center border-r-2 border-gray-800 w-full px-10" placeholder='----' />
-                                    <input type="number" className="flex items-center justify-center border-l-2 border-gray-800 w-full px-10" placeholder='----' />
-                                </div>
-                            </div>
-                            <div id="m-ending" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="Ending">
-                                    Ending
-                                </div>
-                                <div className="h-10 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg">
-                                    <input type="number" className="flex items-center justify-center border-r-2 border-gray-800 w-full px-10" placeholder='----' />
-                                    <input type="number" className="flex items-center justify-center border-l-2 border-gray-800 w-full px-10" placeholder='----' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="md:col-span-3 h-10 text-black flex items-center justify-center rounded-lg shadow-md font-bold text-lg">
-                            EVENING
-                        </div>
-                        <div className="grid grid-cols-3 gap-2 my-5">
-                            <div id="m-direct" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="Direct">
-                                    Direct
-                                </div>
-                                <input type="number" className="h-10 bg-white px-10 border-2 w-full border-gray-800 flex items-center justify-center rounded-b-lg shadow-sm text-lg" placeholder='----' />
-                            </div>
-                            <div id="m-house" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="House">
-                                    House
-                                </div>
-                                <div className="h-10 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg">
-                                    <input type="number" className="flex items-center justify-center border-r-2 border-gray-800 w-full px-10" placeholder='----' />
-                                    <input type="number" className="flex items-center justify-center border-l-2 border-gray-800 w-full px-10" placeholder='----' />
-                                </div>
-                            </div>
-                            <div id="m-ending" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="Ending">
-                                    Ending
-                                </div>
-                                <div className="h-10 bg-white font-semibold border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg">
-                                    <input type="number" className="flex items-center justify-center border-r-2 border-gray-800 w-full px-10" placeholder='----' />
-                                    <input type="number" className="flex items-center justify-center border-l-2 border-gray-800 w-full px-10" placeholder='----' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="md:col-span-3 h-10 text-black flex items-center justify-center rounded-lg shadow-md font-bold text-lg">
-                            NIGHT
-                        </div>
-                        <div className="grid grid-cols-3 gap-2 my-5">
-                            <div id="m-direct" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="Direct">
-                                    Direct
-                                </div>
-                                <input type="number" className="h-10 bg-white border-2 w-full border-gray-800 flex items-center justify-center rounded-b-lg shadow-sm text-lg px-10" placeholder='----' />
-                            </div>
-                            <div id="m-house" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="House">
-                                    House
-                                </div>
-                                <div className="h-10 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg">
-                                    <input type="number" className="flex items-center justify-center border-r-2 border-gray-800 w-full px-10" placeholder='----' />
-                                    <input type="number" className="flex items-center justify-center border-l-2 border-gray-800 w-full px-10" placeholder='----' />
-                                </div>
-                            </div>
-                            <div id="m-ending" className="">
-                                <div className="h-10 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm text-lg" aria-label="Ending">
-                                    Ending
-                                </div>
-                                <div className="h-10 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-lg">
-                                    <input type="number" className="flex items-center justify-center border-r-2 border-gray-800 w-full px-10" placeholder='----' />
-                                    <input type="number" className="flex items-center justify-center border-l-2 border-gray-800 w-full px-10" placeholder='----' />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3">
-                            <div className="md:col-span-2 h-10 bg-blue-800 text-white flex items-center justify-center rounded-l-lg shadow-md font-bold text-lg">
-                                TODAY'S TARGET
-                            </div>
-                            <div className="h-10 text-blue-800 bg-white border-2 border-blue-800 flex items-center justify-center rounded-r-lg shadow-md font-bold text-lg">
-                                <input type="number" className="flex items-center justify-center w-full px-10" placeholder='----' />
-                                <span>to</span>
-                                <input type="number" className="flex items-center justify-center w-full px-10" placeholder='----' />
-                            </div>
-                        </div>
-                        <button className="p-2 bg-orange-600 text-white my-3 w-full rounded-md cursor-pointer hover:bg-orange-700">ADD / UPDATE</button>
-                    </div>
+                   <CommonNumberForm/>
                 </div>
             </div>
             <div className="flex md:flex-row flex-col my-5">
