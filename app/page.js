@@ -2,6 +2,7 @@ import { parseISO, format } from "date-fns";
 import Link from "next/link";
 import Image from "next/image";
 import RoundsTable from "./component/RoundsTable";
+import UploadedImage from "./component/UploadedImage";
 
 export async function generateMetadata() {
   const today = new Date().toLocaleDateString('en-GB'); // e.g., 23/12/2025
@@ -41,7 +42,7 @@ export default function Home() {
       <h1 className="mt-10 text-4xl text-yellow-300 font-bold shadow-lg shadow-black bg-black p-3 opacity-90">SHILLONG TEER</h1>
       <p className="text-md font-semibold m-2 text-yellow-300 shadow-lg shadow-black bg-black p-3 opacity-90">DATE: {formatted_date}</p>
       <div className="p-2 md:p-4 w-full">
-        <RoundsTable/>
+        <RoundsTable />
         <Link href="/previous-results">
           <div className="w-full my-10 cursor-pointer h-10 hover:bg-red-700 bg-orange-700 text-white flex items-center justify-center rounded-lg shadow-2xl shadow-black font-bold text-md">
             CLICK TO VIEW PREVIOUS RESULTS
@@ -54,15 +55,18 @@ export default function Home() {
             </div>
           </Link>
           <Link href="/all_game">
-          <div id="AllGame" className="h-32 bg-blue-800 text-white hover:bg-red-600 flex items-center justify-center rounded-lg shadow-2xl shadow-black md:text-lg text-md text-center cursor-pointer" aria-label="All Game Result">
-            All Game
-          </div>
+            <div id="AllGame" className="h-32 bg-blue-800 text-white hover:bg-red-600 flex items-center justify-center rounded-lg shadow-2xl shadow-black md:text-lg text-md text-center cursor-pointer" aria-label="All Game Result">
+              All Game
+            </div>
           </Link>
           <Link href="/game-code">
-          <div id="GameCode" className="h-32 bg-blue-800 text-white hover:bg-red-600 flex items-center justify-center rounded-lg shadow-2xl shadow-black md:text-lg text-md text-center cursor-pointer" aria-label="Second Round Result">
-            Game Code
-          </div>
+            <div id="GameCode" className="h-32 bg-blue-800 text-white hover:bg-red-600 flex items-center justify-center rounded-lg shadow-2xl shadow-black md:text-lg text-md text-center cursor-pointer" aria-label="Second Round Result">
+              Game Code
+            </div>
           </Link>
+        </div>
+        <div className="p-5 w-full flex items-center justify-center">
+          <UploadedImage/>
         </div>
       </div>
     </div>

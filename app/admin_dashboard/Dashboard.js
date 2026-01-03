@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase-client';
 import CommonNumberForm from './CommonNumber';
+import Image from 'next/image';
 
 const Dashboard = () => {
     //HOME PAGE
@@ -63,7 +64,7 @@ const Dashboard = () => {
         }
         return slots;
     }
- 
+
     const timeSlots = generateTimeSlots();
 
     const handleAdd = async (time, value) => {
@@ -135,6 +136,29 @@ const Dashboard = () => {
         }
     }
 
+    const [imageUrl, setImageUrl] = useState()
+    const uploadFile = async (file) => {
+        if (!file) return;
+
+        // Use a fixed name so it always replaces the previous one
+        const filePath = `latest_results/today_result.jpg`;
+
+        const { data, error } = await supabase.storage
+            .from('Teer')
+            .upload(filePath, file, {
+                cacheControl: '0', // Set to 0 so the browser doesn't show the old image from cache
+                upsert: true       // This tells Supabase to overwrite the existing file
+            });
+
+        if (error) {
+            console.error('Error:', error.message);
+        } else {
+            const { data: urlData } = supabase.storage.from('Teer').getPublicUrl(filePath);
+            // Add a timestamp to the URL to force the browser to refresh the image
+            setImageUrl(`${urlData.publicUrl}?t=${Date.now()}`);
+        }
+    };
+
     return (
         <>
             <div className='flex md:flex-row flex-col my-5'>
@@ -151,7 +175,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <div className='md:w-2/3 w-full m-2 p-2 shadow-lg shadow-blue-900 rounded-lg'>
-                   <CommonNumberForm/>
+                    <CommonNumberForm />
                 </div>
             </div>
             <div className="flex md:flex-row flex-col my-5">
@@ -176,6 +200,23 @@ const Dashboard = () => {
                             <button className="p-2 bg-orange-600 text-white my-3 w-full rounded-md cursor-pointer hover:bg-orange-700" type='submit'>ADD / UPDATE</button>
                         </div>
                     </form>
+                    <h1 className="text-center font-bold text-lg m-3">IMAGE UPLOAD</h1>
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => uploadFile(e.target.files[0])}
+                        className="block w-full text-sm text-gray-300 p-2 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 bg-blue-400"
+                    />
+                    {imageUrl && (
+                        <div className="mt-4">
+                            <p className="text-sm text-gray-500 mb-2">Preview:</p>
+                            <img
+                                src={imageUrl}
+                                alt="Uploaded Teer Result"
+                                className="w-64 h-auto rounded-lg shadow-md border"
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </>

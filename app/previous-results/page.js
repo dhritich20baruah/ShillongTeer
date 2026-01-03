@@ -3,60 +3,57 @@ import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase-client";
 
 export default function PreviousResults() {
-    const [results, setResults] = useState([
-        { "date": "24-12-2025", "morning-sr": 34, "morning-fr": 34, "evening-sr": 45, "evening-fr": 45, "night-sr": 89, "night-fr": 89 },
-        { "date": "23-12-2025", "morning-sr": 12, "morning-fr": 34, "evening-sr": 67, "evening-fr": 45, "night-sr": 89, "night-fr": 5 },
-        { "date": "22-12-2025", "morning-sr": 88, "morning-fr": 34, "evening-sr": 23, "evening-fr": 45, "night-sr": 89, "night-fr": 41 },
-        { "date": "21-12-2025", "morning-sr": 56, "morning-fr": 34, "evening-sr": 90, "evening-fr": 45, "night-sr": 89, "night-fr": 72 },
-        { "date": "20-12-2025", "morning-sr": 31, "morning-fr": 34, "evening-sr": 54, "evening-fr": 45, "night-sr": 89, "night-fr": 18 },
-        { "date": "19-12-2025", "morning-sr": 90, "morning-fr": 34, "evening-sr": 11, "evening-fr": 45, "night-sr": 89, "night-fr": 63 },
-        { "date": "18-12-2025", "morning-sr": 47, "morning-fr": 34, "evening-sr": 82, "evening-fr": 45, "night-sr": 89, "night-fr": 29 },
-        { "date": "17-12-2025", "morning-sr": 2,  "morning-fr": 34, "evening-sr": 36, "evening-fr": 45, "night-sr": 89, "night-fr": 95 },
-        { "date": "16-12-2025", "morning-sr": 74, "morning-fr": 34, "evening-sr": 15, "evening-fr": 45, "night-sr": 89, "night-fr": 50 },
-        { "date": "15-12-2025", "morning-sr": 21, "morning-fr": 34, "evening-sr": 99, "evening-fr": 45, "night-sr": 89, "night-fr": 7 },
-        { "date": "14-12-2025", "morning-sr": 65, "morning-fr": 34, "evening-sr": 38, "evening-fr": 45, "night-sr": 89, "night-fr": 44 },
-        { "date": "24-12-2025", "morning-sr": 34, "morning-fr": 34, "evening-sr": 45, "evening-fr": 45, "night-sr": 89, "night-fr": 89 },
-        { "date": "23-12-2025", "morning-sr": 12, "morning-fr": 34, "evening-sr": 67, "evening-fr": 45, "night-sr": 89, "night-fr": 5 },
-        { "date": "22-12-2025", "morning-sr": 88, "morning-fr": 34, "evening-sr": 23, "evening-fr": 45, "night-sr": 89, "night-fr": 41 },
-        { "date": "21-12-2025", "morning-sr": 56, "morning-fr": 34, "evening-sr": 90, "evening-fr": 45, "night-sr": 89, "night-fr": 72 },
-        { "date": "20-12-2025", "morning-sr": 31, "morning-fr": 34, "evening-sr": 54, "evening-fr": 45, "night-sr": 89, "night-fr": 18 },
-        { "date": "19-12-2025", "morning-sr": 90, "morning-fr": 34, "evening-sr": 11, "evening-fr": 45, "night-sr": 89, "night-fr": 63 },
-        { "date": "18-12-2025", "morning-sr": 47, "morning-fr": 34, "evening-sr": 82, "evening-fr": 45, "night-sr": 89, "night-fr": 29 },
-        { "date": "17-12-2025", "morning-sr": 2,  "morning-fr": 34, "evening-sr": 36, "evening-fr": 45, "night-sr": 89, "night-fr": 95 },
-        { "date": "16-12-2025", "morning-sr": 74, "morning-fr": 34, "evening-sr": 15, "evening-fr": 45, "night-sr": 89, "night-fr": 50 },
-        { "date": "15-12-2025", "morning-sr": 21, "morning-fr": 34, "evening-sr": 99, "evening-fr": 45, "night-sr": 89, "night-fr": 7 },
-        { "date": "14-12-2025", "morning-sr": 65, "morning-fr": 34, "evening-sr": 38, "evening-fr": 45, "night-sr": 89, "night-fr": 44 }
-    ])
+    const [roundData, setRoundData] = useState([{ "date": "--/--/----", "morning-sr": "--", "morning-fr": "--", "evening-sr": "--", "evening-fr": "--", "night-sr": "--", "night-fr": "--" }]);
 
-     const [roundData, setRoundData] = useState({});
-    
-        const fetchRounds = async () => {
-            const { data } = await supabase
-                .from('round_results')
-                .select('*')
-                .order('result_date', {ascending: true});
-    
-            if (data) {
-                const formatted = data.reduce((acc, row) => ({
-                    ...acc, [`${row.session_name}-${row.round_type}`]: row.value, date: row.result_date
-                }), {});
-                console.log(formatted)
-                setRoundData(formatted)
-            }
+    const fetchRounds = async () => {
+        const { data, error } = await supabase
+            .from('round_results')
+            .select('*')
+            .order('result_date', { ascending: false });
+
+        if (error) {
+            console.log("Fetch error:", error);
+            return;
         }
-    
-        const rounds = [
-            { id: 'morning-fr', label: 'Morning First Round', session: 'morning', type: 'fr' },
-            { id: 'morning-sr', label: 'Morning Second Round', session: 'morning', type: 'sr' },
-            { id: 'evening-fr', label: 'Evening First Round', session: 'evening', type: 'fr' },
-            { id: 'evening-sr', label: 'Evening Second Round', session: 'evening', type: 'sr' },
-            { id: 'night-fr', label: 'Night First Round', session: 'night', type: 'fr' },
-            { id: 'night-sr', label: 'Night Second Round', session: 'night', type: 'sr' },
-        ]
-    
-        useEffect(() => {
-            fetchRounds()
-        }, [])
+
+        if (!data || data.length === 0) return;
+
+        const grouped = data.reduce((acc, row) => {
+            const date = row.result_date;
+            if (!acc[date]) {
+                acc[date] = [];
+            }
+            acc[date].push(row);
+            return acc;
+        }, {});
+
+        const formattedArray = Object.entries(grouped).map(([date, rows]) => {
+            const obj = {
+                date: date.split('-').reverse().join('/'), // convert to DD/MM/YYYY
+                "morning-fr": "--",
+                "morning-sr": "--",
+                "evening-fr": "--",
+                "evening-sr": "--",
+                "night-fr": "--",
+                "night-sr": "--"
+            };
+
+            for (const r of rows) {
+                const key = `${r.session_name}-${r.round_type}`;
+                if (key in obj) {
+                    obj[key] = r.value.toString().padStart(2, "0")
+                }
+            }
+
+            return obj;
+        });
+
+        setRoundData(formattedArray)
+    }
+
+    useEffect(() => {
+        fetchRounds()
+    }, [])
 
     return (
         <div className="flex flex-col min-h-screen items-center bg-white text-black w-full">
@@ -67,7 +64,7 @@ export default function PreviousResults() {
                 </div>
                 <div className="text-white flex flex-col items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                     <p>
-                    MORNING RESULTS
+                        MORNING RESULTS
                     </p>
                     <div className="flex justify-around font-semibold w-full">
                         <p>FR</p>
@@ -76,7 +73,7 @@ export default function PreviousResults() {
                 </div>
                 <div className="text-white flex flex-col items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                     <p>
-                    EVENING RESULTS
+                        EVENING RESULTS
                     </p>
                     <div className="flex justify-around font-semibold w-full">
                         <p>FR</p>
@@ -85,7 +82,7 @@ export default function PreviousResults() {
                 </div>
                 <div className="text-white flex flex-col items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                     <p>
-                    NIGHT RESULTS
+                        NIGHT RESULTS
                     </p>
                     <div className="flex justify-around font-semibold w-full">
                         <p>FR</p>
@@ -93,7 +90,7 @@ export default function PreviousResults() {
                     </div>
                 </div>
             </div>
-            {results.map((item, index) => {
+            {roundData.map((item, index) => {
                 return (
                     <div className="grid grid-cols-4 w-full md:w-[95%]" key={index}>
                         <div className="h-12 border-2 border-blue-800 bg-white text-black flex items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
