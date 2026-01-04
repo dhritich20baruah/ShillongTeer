@@ -43,8 +43,9 @@ const RoundsTable = () => {
     return (
         <div className="grid grid-cols-3 gap-1">
             <div id="Morning">
-                <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="First Round Result">
-                    Morning Round
+                <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex flex-col items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="First Round Result">
+                    <p>Morning Round</p>
+                    <p>10:40 AM - 11:40 AM</p>
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
                     <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{(roundData["morning-fr"] ?? '--').toString().padStart(2, '0') || ''}</p></div>
@@ -52,8 +53,9 @@ const RoundsTable = () => {
                 </div>
             </div>
             <div id="Evening">
-                <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
-                    Evening Round
+                <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex flex-col items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
+                     <p>Evening Round</p>
+                    <p>3:30 PM - 4:30 PM</p>
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
                     <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{(roundData["evening-fr"] ?? '--').toString().padStart(2, '0') || ''}</p></div>
@@ -61,8 +63,9 @@ const RoundsTable = () => {
                 </div>
             </div>
             <div id="Night">
-                <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
-                    Night Round
+                <div className="h-20 bg-gray-800 text-white border-2 border-gray-800 flex flex-col items-center justify-center rounded-t-lg shadow-sm md:text-lg text-md text-center" aria-label="Second Round Result">
+                     <p>Night Round</p>
+                    <p>8:40 PM - 9:40 PM</p>
                 </div>
                 <div className="h-20 bg-white border-2 border-gray-800 flex justify-evenly rounded-b-lg shadow-sm text-xl font-semibold">
                     <div className="flex items-center justify-center border-r-2 border-gray-800 w-full"><p>{(roundData["night-fr"] ?? '--').toString().padStart(2, '0') || ''}</p></div>

@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/supabase-client";
+import Image from "next/image";
 
 export default function PreviousResults() {
     const [roundData, setRoundData] = useState([{ "date": "--/--/----", "morning-sr": "--", "morning-fr": "--", "evening-sr": "--", "evening-fr": "--", "night-sr": "--", "night-fr": "--" }]);
@@ -56,8 +57,20 @@ export default function PreviousResults() {
     }, [])
 
     return (
-        <div className="flex flex-col min-h-screen items-center bg-white text-black w-full">
-            <h1 className="mt-10 text-4xl text-gray-700 font-bold text-center">SHILLONG TEER PREVIOUS RESULTS</h1>
+        <div className="flex flex-col min-h-screen items-center text-black w-full">
+            {/* Background Image Layer */}
+            <div className="fixed inset-0 -z-10">
+                <Image
+                    src="/Teer.png"
+                    alt="Shillong Teer Background"
+                    fill
+                    priority
+                    className="object-cover"
+                />
+                {/* Dark overlay to make text pop */}
+                <div className="absolute inset-0 bg-gray-900/40" />
+            </div>
+            <h1 className="mt-10 text-4xl text-gray-200 font-bold text-center shadow-lg shadow-black bg-black p-3 opacity-90">SHILLONG TEER PREVIOUS RESULTS</h1>
             <div className="grid grid-cols-4 w-full mt-10 md:w-[95%] bg-blue-800 h-fit p-1 sticky top-0">
                 <div className="text-white flex items-center justify-center text-center text-sm shadow-md md:font-bold md:text-md">
                     DATE

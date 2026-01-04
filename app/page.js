@@ -39,8 +39,8 @@ export default function Home() {
         {/* Dark overlay to make text pop */}
         <div className="absolute inset-0 bg-gray-900/40" />
       </div>
-      <h1 className="mt-10 text-4xl text-yellow-300 font-bold shadow-lg shadow-black bg-black p-3 opacity-90">SHILLONG TEER</h1>
-      <p className="text-md font-semibold m-2 text-yellow-300 shadow-lg shadow-black bg-black p-3 opacity-90">DATE: {formatted_date}</p>
+      <h1 className="mt-10 text-4xl text-gray-300 font-bold shadow-lg shadow-black bg-black p-3 opacity-90">SHILLONG TEER</h1>
+      <p className="text-md font-semibold m-2 text-gray-300 shadow-lg shadow-black bg-black p-3 opacity-90">DATE: {formatted_date}</p>
       <div className="p-2 md:p-4 w-full">
         <RoundsTable />
         <Link href="/previous-results">

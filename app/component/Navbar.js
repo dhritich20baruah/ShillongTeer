@@ -23,7 +23,7 @@ const Navbar = () => {
                 <div className="flex items-center space-x-6">
                     <Link href="/">
                         <button className="text-white hover:text-black font-medium transition-colors cursor-pointer font-serif italic text-xl">
-                            Shillong Teer
+                            Shillong Live
                         </button>
                     </Link>
                 </div>
