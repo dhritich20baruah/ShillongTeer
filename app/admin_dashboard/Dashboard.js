@@ -6,46 +6,49 @@ import Image from 'next/image';
 
 const Dashboard = () => {
     //HOME PAGE
-    const [roundData, setRoundData] = useState({});
+    const [morningfr, setMorningfr] = useState(0);
+    const [morningsr, setMorningsr] = useState(0);
+    const [eveningfr, setEveningfr] = useState(0);
+    const [eveningsr, setEveningsr] = useState(0);
+    const [nightfr, setNightfr] = useState(0);
+    const [nightsr, setNightsr] = useState(0);
 
-    const handleRoundUpdate = async (session, round, value) => {
-        const today = new Date().toISOString().split('T')[0];
+    const handleRoundUpdate = async () => {
+        const today = new Date().toLocaleDateString('en-CA');
 
-        const { error } = await supabase.from('round_results')
+        const { error } = await supabase.from('sessions_table')
             .upsert({
                 result_date: today,
-                session_name: session,
-                round_type: round,
-                value: parseInt(value)
-            }, { onConflict: 'result_date, session_name, round_type' });
+                morning_fr: parseInt(morningfr),
+                morning_sr: parseInt(morningsr),
+                evening_fr: parseInt(eveningfr),
+                evening_sr: parseInt(eveningsr),
+                night_fr: parseInt(nightfr),
+                night_sr: parseInt(nightsr)
+            }, { onConflict: 'result_date' });
 
         if (error) alert(error.message)
-        else alert(`${session} ${round} updated!`)
+        else alert(`Results updated!`)
     }
 
     const fetchRounds = async () => {
-        const today = new Date().toISOString().split('T')[0];
+        const today = new Date().toLocaleDateString('en-CA');
         const { data } = await supabase
-            .from('round_results')
+            .from('sessions_table')
             .select('*')
-            .eq('result_date', today);
+            .eq('result_date', today)
+            .single();
 
         if (data) {
-            const formatted = data.reduce((acc, row) => ({
-                ...acc, [`${row.session_name}-${row.round_type}`]: row.value
-            }), {});
-            setRoundData(formatted)
+            setMorningfr(data.morning_fr)
+            setMorningsr(data.morning_sr)
+            setEveningfr(data.evening_fr)
+            setEveningsr(data.evening_sr)
+            setNightfr(data.night_fr)
+            setNightsr(data.night_sr)
         }
     }
 
-    const rounds = [
-        { id: 'morning-fr', label: 'Morning First Round', session: 'morning', type: 'fr' },
-        { id: 'morning-sr', label: 'Morning Second Round', session: 'morning', type: 'sr' },
-        { id: 'evening-fr', label: 'Evening First Round', session: 'evening', type: 'fr' },
-        { id: 'evening-sr', label: 'Evening Second Round', session: 'evening', type: 'sr' },
-        { id: 'night-fr', label: 'Night First Round', session: 'night', type: 'fr' },
-        { id: 'night-sr', label: 'Night Second Round', session: 'night', type: 'sr' },
-    ]
 
     //ALL GAME CODE
     const [results, setResults] = useState({});
@@ -67,22 +70,27 @@ const Dashboard = () => {
 
     const timeSlots = generateTimeSlots();
 
-    const handleAdd = async (time, value) => {
-        if (!value) return alert("Please enter a number")
-        const { data, error } = await supabase.from('all_game')
-            .upsert({
-                time_slot: time,
-                result: parseInt(value),
-                result_date: new Date().toISOString().split('T')[0] // YYYY-MM-DD
-            }, { onConflict: 'result_date, time_slot' });
+    const handleUpdateAll = async () => {
+        const today = new Date().toLocaleDateString('en-CA');
+
+        const recordsToUpload = Object.entries(results).map(([time, val]) => ({
+            result_date: today,
+            time_slot: time,
+            result: val === '' ? null : parseInt(val)
+        })).filter(item => item.result !== null);
+
+        if (recordsToUpload.length === 0) return alert("No results entered");
+
+        const { error } = await supabase
+            .from('all_game')
+            .upsert(recordsToUpload, { onConflict: 'result_date, time_slot' });
 
         if (error) {
-            console.error("Error updating: ", error.message)
+            alert("Error updating results: " + error.message);
         } else {
-            alert(`Saving result for ${time}:`, results[time]);
-            // This is where you would trigger your Postgres/Supabase update
+            alert("All results updated successfully!");
         }
-    };
+    }
 
     const fetchAllGame = async () => {
         const today = new Date().toISOString().split('T')[0];
@@ -164,15 +172,33 @@ const Dashboard = () => {
             <div className='flex md:flex-row flex-col my-5'>
                 <div className="flex flex-col items-center text-black md:w-1/3 w-full p-2 m-2 shadow-lg shadow-blue-900 rounded-lg">
                     <h1 className='font-semibold text-lg'>HOME PAGE</h1>
-                    <div className='space-y-2'>
-                        {rounds.map((round) => (
-                            <div key={round.id} className='flex justify-between w-full my-2 items-center'>
-                                <label htmlFor="morning-fr" className="w-44 block text-md font-medium text-gray-800 m-2">{round.label}</label>
-                                <input type="number" value={roundData[round.id] || ''} onChange={(e) => setRoundData({ ...roundData, [round.id]: e.target.value })} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
-                                <button className="p-2 bg-orange-600 text-white mx-1 rounded-md cursor-pointer hover:bg-orange-700" onClick={() => handleRoundUpdate(round.session, round.type, roundData[round.id])}>ADD</button>
-                            </div>
-                        ))}
-                    </div>
+                    <form onSubmit={handleRoundUpdate} className='space-y-2'>
+                        <div className='flex justify-between w-full my-2 items-center'>
+                            <label htmlFor="morning-fr" className="w-44 block text-md font-medium text-gray-800 m-2">MORNING FIRST ROUND</label>
+                            <input type="number" value={morningfr} onChange={(e) => setMorningfr(e.target.value)} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                        </div>
+                        <div className='flex justify-between w-full my-2 items-center'>
+                            <label htmlFor="morning-sr" className="w-44 block text-md font-medium text-gray-800 m-2">MORNING SECOND ROUND</label>
+                            <input type="number" value={morningsr} onChange={(e) => setMorningsr(e.target.value)} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                        </div>
+                        <div className='flex justify-between w-full my-2 items-center'>
+                            <label htmlFor="evening-fr" className="w-44 block text-md font-medium text-gray-800 m-2">EVENING FIRST ROUND</label>
+                            <input type="number" value={eveningfr} onChange={(e) => setEveningfr(e.target.value)} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                        </div>
+                        <div className='flex justify-between w-full my-2 items-center'>
+                            <label htmlFor="evening-sr" className="w-44 block text-md font-medium text-gray-800 m-2">EVENING SECOND ROUND</label>
+                            <input type="number" value={eveningsr} onChange={(e) => setEveningsr(e.target.value)} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                        </div>
+                        <div className='flex justify-between w-full my-2 items-center'>
+                            <label htmlFor="night-fr" className="w-44 block text-md font-medium text-gray-800 m-2">NIGHT FIRST ROUND</label>
+                            <input type="number" value={nightfr} onChange={(e) => setNightfr(e.target.value)} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                        </div>
+                        <div className='flex justify-between w-full my-2 items-center'>
+                            <label htmlFor="night-sr" className="w-44 block text-md font-medium text-gray-800 m-2">NIGHT SECOND ROUND</label>
+                            <input type="number" value={nightsr} onChange={(e) => setNightsr(e.target.value)} className="px-4 py-3 w-20 rounded-lg border border-gray-600 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='----' />
+                        </div>
+                        <button className="w-full p-2 bg-orange-600 text-white mx-1 rounded-md cursor-pointer hover:bg-orange-700" type='submit'>ADD</button>
+                    </form>
                 </div>
                 <div className='md:w-2/3 w-full m-2 p-2 shadow-lg shadow-blue-900 rounded-lg'>
                     <CommonNumberForm />
@@ -186,9 +212,9 @@ const Dashboard = () => {
                             <div key={time} className='flex m-2 p-2 bg-blue-700'>
                                 <label className="block text-md font-medium text-white m-2">{time}</label>
                                 <input type="number" defaultValue={results[time] || ''} onChange={(e) => setResults({ ...results, [time]: e.target.value })} className="p-1 w-15 h-10 rounded-lg border border-gray-600 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all" placeholder='--' />
-                                <button onClick={() => handleAdd(time, results[time])} className="p-2 bg-orange-600 text-white mx-1 rounded-md cursor-pointer hover:bg-orange-700">ADD</button>
                             </div>
                         ))}
+                        <button onClick={handleUpdateAll} className="p-2 m-2 bg-orange-600 text-white mx-1 rounded-md cursor-pointer hover:bg-orange-700">ADD/UPDATE</button>
                     </div>
                 </div>
                 <div className='md:w-1/3 w-full m-2 p-2 shadow-lg shadow-blue-900 rounded-lg'>

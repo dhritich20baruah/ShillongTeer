@@ -6,44 +6,19 @@ import { supabase } from '../lib/supabase-client';
 
 const AllGame = () => {
   const [results, setResults] = useState({});
-  const [game, setGame] = useState([
-    { time: "10:00 AM", result: 72 },
-    { time: "10:30 AM", result: 14 },
-    { time: "11:00 AM", result: 89 },
-    { time: "11:30 AM", result: 43 },
-    { time: "12:00 PM", result: 5 },
-    { time: "12:30 PM", result: 61 },
-    { time: "01:00 PM", result: 28 },
-    { time: "01:30 PM", result: 97 },
-    { time: "02:00 PM", result: 33 },
-    { time: "02:30 PM", result: 50 },
-    { time: "03:00 PM", result: 19 },
-    { time: "03:30 PM", result: 84 },
-    { time: "04:00 PM", result: 12 },
-    { time: "04:30 PM", result: 66 },
-    { time: "05:00 PM", result: 39 },
-    { time: "05:30 PM", result: 8 },
-    { time: "06:00 PM", result: 55 },
-    { time: "06:30 PM", result: 91 },
-    { time: "07:00 PM", result: 22 },
-    { time: "07:30 PM", result: 47 },
-    { time: "08:00 PM", result: 70 },
-    { time: "08:30 PM", result: 31 },
-    { time: "09:00 PM", result: 16 },
-    { time: "09:30 PM", result: 98 },
-    { time: "10:00 PM", result: 67 }]
-  )
+  const [loading, setLoading] = useState(true);
+
   const today = new Date().toISOString().split("T")[0];
   const parsedDate = parseISO(today);
   const formatted_date = format(parsedDate, "dd/MM/yyyy");
 
   const fetchAllGame = async () => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toLocaleDateString('en-CA');
 
-    const { data, error } = await supabase.from('all_game')
-      .select('time_slot, result')
+    const { data, error } = await supabase.from('all_game').select('time_slot, result')
       .eq('result_date', today);
 
+      console.log("raw data", data)
     if (data) {
       const formatted = data.reduce((acc, curr) => ({
         ...acc, [curr.time_slot]: curr.result
@@ -51,11 +26,27 @@ const AllGame = () => {
       console.log("results",formatted)
       setResults(formatted)
     }
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchAllGame();
+
+    const interval = setInterval(() => {
+            const now = new Date();
+            const mins = now.getMinutes();
+
+            // Refresh exactly when the clock hits :00 or :30 (plus a small buffer)
+            if (mins === 0 || mins === 1 || mins === 30 || mins === 31) {
+                fetchTimedResults();
+            }
+        }, 60000);
+
+        return () => clearInterval(interval);
   }, [])
+
+  if (loading) return <div>Loading results...</div>;
+
   return (
     <div className="flex flex-col min-h-screen items-center text-black w-full mb-10">
       {/* Background Image Layer */}
@@ -78,14 +69,18 @@ const AllGame = () => {
           <p>Time</p>
           <p>Result</p>
         </div>
-        {game.map((item, index) => {
-          return (
-            <div key={index} className="flex md:w-1/2 w-full justify-evenly items-center bg-white text-black font-bold border-b-2 border-blue-700 text-xl">
-              <p className='flex flex-col text-center'>{item.time}</p>
-              <p className="flex flex-col text-center">{results[item.time]}</p>
-            </div>
-          )
-        })}
+        <div className="flex flex-col justify-center items-center w-100">
+            {Object.keys(results).map((time) => (
+                <div key={time} className="p-3 border rounded shadow-sm bg-white flex justify-evenly items-center w-100">
+                    <div className="text-xl text-gray-900">{time}</div>
+                    <div className="text-xl font-bold text-blue-800">
+                        {results[time] !== null 
+                            ? results[time].toString().padStart(2, '0') 
+                            : '--'}
+                    </div>
+                </div>
+            ))}
+        </div>
       </div>
     </div>
   )
